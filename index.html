@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+		"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<title>Beliefs Inventory</title>
+	<style type="text/css" media="screen">
+		body {
+			background: #bdf;
+		}
+		.clearer {
+			clear: both;
+		}
+		.main {
+			font-family: GillSans, Calibri, Trebuchet, sans-serif;
+			border: 5px solid #8ae;
+			-moz-border-radius: 2em;
+		 	-webkit-border-radius: 2em;
+			border-radius: 2em;
+			padding: 1em 3em 3em;
+			background: #def;
+		}
+		.questions, .info {
+			text-align: center;
+		}
+		.question, .infoitem, .heading {
+			padding: 0.25em 0;
+			text-align: center;
+		}
+		.infoitem div {
+			border-right: 1px solid #fff;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.infoitem .prompt {
+			width: 20em;
+			padding: 0 1em;
+			border-bottom: 1px solid #def;
+			text-align: left;
+			font-weight: bold;
+			color: #555;
+			background: #fff;
+		}
+		.infoitem .answer {
+			width: 16em;
+			padding: 1em 1em 0.9em 5em;
+			text-align: center;
+			color: #555;
+			background: #fff;
+		}
+		.infoitem .answer input {
+			font-size: 1em;
+			width: 15em;
+			text-align: center;
+		}
+		.question div {
+			display: inline-block;
+			padding: 1em 1em 0.9em;
+			vertical-align: middle;
+		}
+		div.qnum {
+			border-right: 1px solid #def;
+			width: 2em;
+			text-align: center;
+			font-weight: bold;
+			color: #555;
+			background: #fff;
+		}
+		div.qanswer {
+			width: 16em;
+			text-align: center;
+			color: #555;
+			background: #fff;
+		}
+		.result {
+			background: #fff;
+			padding: 5em;
+			margin: 5em;
+		}
+	</style>
+	<!--[if lt ie 8]>
+	<style type="text/css" media="screen">
+		/* OMFG I can't believe IE is making me do this.. */
+		.question div { display: inline; }
+	</style>
+	<![endif]--> 
+	<style type="text/css" media="print,screen">
+		.result {
+			font-family: GillSans, Calibri, Trebuchet, sans-serif;
+			font-size: 12pt;
+			color: #000;
+			background: #fff;
+		}
+		.rheader {
+			border-bottom: 1pt solid #fff;
+		}
+		.rheading {
+			padding: 0 0 12pt;
+			font-size: 22pt;
+			font-weight: bold;
+		}
+		.rinfo {
+			padding: 12pt 0;
+		}
+		.rinfolabel {
+			font-weight: bold;
+			float: left;
+			width: 5em;
+		}
+		.rbelief {
+			padding: 8pt 0;
+		}
+		.rintensity {
+			float: left;
+			font-size: 18pt;
+			font-weight: bold;
+			width: 24pt;
+			text-align: center;
+		}
+		.rdescription {
+			margin-left: 32pt;
+			padding: 2pt 0 2pt 8pt;
+			border-left: 1pt solid #000;
+			min-height: 18pt;
+		}
+	</style>
+	<style type="text/css" media="print">
+		html, body {
+			margin: 0;
+			padding: 0;
+		}
+		#heading, #questions, #info {
+			display: none;
+		}
+		#result {
+			margin-left: 36pt;
+		}
+	</style>
+	<script src="http://www.google.com/jsapi"></script>
+	<script>
+		// Load jQuery
+		google.load("jquery", "1.3.2");
+	</script>
+	<script type="text/javascript">
+
+		var beliefs = {
+			1: {
+				"intensity": 0,
+				"description": "it is an absolute necessity for an adult to have love and approval from peers, family, and friends"
+			},
+			2: {
+				"intensity": 0,
+				"description": "you must be unfailingly competent and almost perfect in all you undertake"
+			},
+			3: {
+				"intensity": 0,
+				"description": "certain people are evil, wicked, and villainous, and should be punished"
+			},
+			4: {
+				"intensity": 0,
+				"description": "it is horrible when things are not the way you would like them to be"
+			},
+			5: {
+				"intensity": 0,
+				"description": "external events cause most human misery&mdash;that people simply react as events trigger their emotions"
+			},
+			6: {
+				"intensity": 0,
+				"description": "you should feel fear or anxiety about anything that is unknown, uncertain, or potentially dangerous"
+			},
+			7: {
+				"intensity": 0,
+				"description": "it is easier to avoid than face life's difficulties and responsibilities"
+			},
+			8: {
+				"intensity": 0,
+				"description": "you need something other or stronger or greater than yourself to rely on"
+			},
+			9: {
+				"intensity": 0,
+				"description": "the past has a lot to do with determining the present"
+			},
+			10: {
+				"intensity": 0,
+				"description": "happiness can be achieved by inaction, passivity, and endless leisure"
+			}
+		};
+
+		var questions = {
+			1:  { "belief": 1,  "score": "agree" },
+			2:  { "belief": 2,  "score": "agree" },
+			3:  { "belief": 3,  "score": "agree" },
+			4:  { "belief": 4,  "score": "disagree" },
+			5:  { "belief": 5,  "score": "disagree" },
+			6:  { "belief": 6,  "score": "agree" },
+			7:  { "belief": 7,  "score": "agree" },
+			8:  { "belief": 8,  "score": "agree" },
+			9:  { "belief": 9,  "score": "agree" },
+			10: { "belief": 10, "score": "agree" },
+			11: { "belief": 1,  "score": "disagree" },
+			12: { "belief": 2,  "score": "disagree" },
+			13: { "belief": 3,  "score": "agree" },
+			14: { "belief": 4,  "score": "disagree" },
+			15: { "belief": 5,  "score": "disagree" },
+			16: { "belief": 6,  "score": "disagree" },
+			17: { "belief": 7,  "score": "disagree" },
+			18: { "belief": 8,  "score": "agree" },
+			19: { "belief": 9,  "score": "agree" },
+			20: { "belief": 10, "score": "disagree" },
+			21: { "belief": 1,  "score": "agree" },
+			22: { "belief": 2,  "score": "disagree" },
+			23: { "belief": 3,  "score": "agree" },
+			24: { "belief": 4,  "score": "agree" },
+			25: { "belief": 5,  "score": "disagree" },
+			26: { "belief": 6,  "score": "agree" },
+			27: { "belief": 7,  "score": "agree" },
+			28: { "belief": 8,  "score": "agree" },
+			29: { "belief": 9,  "score": "disagree" },
+			30: { "belief": 10, "score": "disagree" },
+			31: { "belief": 1,  "score": "disagree" },
+			32: { "belief": 2,  "score": "disagree" },
+			33: { "belief": 3,  "score": "agree" },
+			34: { "belief": 4,  "score": "agree" },
+			35: { "belief": 5,  "score": "disagree" },
+			36: { "belief": 6,  "score": "disagree" },
+			37: { "belief": 7,  "score": "disagree" },
+			38: { "belief": 8,  "score": "agree" },
+			39: { "belief": 9,  "score": "disagree" },
+			40: { "belief": 10, "score": "disagree" },
+			41: { "belief": 1,  "score": "disagree" },
+			42: { "belief": 2,  "score": "agree" },
+			43: { "belief": 3,  "score": "disagree" },
+			44: { "belief": 4,  "score": "disagree" },
+			45: { "belief": 5,  "score": "disagree" },
+			46: { "belief": 6,  "score": "agree" },
+			47: { "belief": 7,  "score": "agree" },
+			48: { "belief": 8,  "score": "disagree" },
+			49: { "belief": 9,  "score": "agree" },
+			50: { "belief": 10, "score": "agree" },
+			51: { "belief": 1,  "score": "agree" },
+			52: { "belief": 2,  "score": "disagree" },
+			53: { "belief": 3,  "score": "agree" },
+			54: { "belief": 4,  "score": "disagree" },
+			55: { "belief": 5,  "score": "agree" },
+			56: { "belief": 6,  "score": "disagree" },
+			57: { "belief": 7,  "score": "disagree" },
+			58: { "belief": 8,  "score": "disagree" },
+			59: { "belief": 9,  "score": "disagree" },
+			60: { "belief": 10, "score": "disagree" },
+			61: { "belief": 1,  "score": "disagree" },
+			62: { "belief": 2,  "score": "agree" },
+			63: { "belief": 3,  "score": "agree" },
+			64: { "belief": 4,  "score": "disagree" },
+			65: { "belief": 5,  "score": "disagree" },
+			66: { "belief": 6,  "score": "agree" },
+			67: { "belief": 7,  "score": "agree" },
+			68: { "belief": 8,  "score": "disagree" },
+			69: { "belief": 9,  "score": "agree" },
+			70: { "belief": 10, "score": "agree" },
+			71: { "belief": 1,  "score": "agree" },
+			72: { "belief": 2,  "score": "agree" },
+			73: { "belief": 3,  "score": "agree" },
+			74: { "belief": 4,  "score": "disagree" },
+			75: { "belief": 5,  "score": "agree" },
+			76: { "belief": 6,  "score": "agree" },
+			77: { "belief": 7,  "score": "disagree" },
+			78: { "belief": 8,  "score": "agree" },
+			79: { "belief": 9,  "score": "agree" },
+			80: { "belief": 10, "score": "agree" },
+			81: { "belief": 1,  "score": "agree" },
+			82: { "belief": 2,  "score": "agree" },
+			83: { "belief": 3,  "score": "disagree" },
+			84: { "belief": 4,  "score": "agree" },
+			85: { "belief": 5,  "score": "disagree" },
+			86: { "belief": 6,  "score": "disagree" },
+			87: { "belief": 7,  "score": "disagree" },
+			88: { "belief": 8,  "score": "disagree" },
+			89: { "belief": 9,  "score": "agree" },
+			90: { "belief": 10, "score": "agree" },
+			91: { "belief": 1,  "score": "disagree" },
+			92: { "belief": 2,  "score": "disagree" },
+			93: { "belief": 3,  "score": "disagree" },
+			94: { "belief": 4,  "score": "disagree" },
+			95: { "belief": 5,  "score": "disagree" },
+			96: { "belief": 6,  "score": "agree" },
+			97: { "belief": 7,  "score": "disagree" },
+			98: { "belief": 8,  "score": "disagree" },
+			99: { "belief": 9,  "score": "disagree" },
+			100:{ "belief": 10, "score": "agree" }
+		};
+
+		$(document).ready(function() {
+			$("#result").hide();
+			// add questions
+			$("#questions").html("");
+			for (question in questions) {
+				var qn = questions[question];
+				var belief = qn["belief"];
+				var qid = "q" + question;
+				var qhtml = "";
+				qhtml += "<div class='question'>";
+				qhtml += "<div class='qnum'>" + question + "</div>";
+				qhtml += "<div class='qanswer'>";
+				qhtml += "<label>Agree&nbsp;<input type='radio' name='" + qid + "' value='agree' /></label>";
+				qhtml += "&nbsp;";
+				qhtml += "<label><input type='radio' name='" + qid + "' value='disagree' />&nbsp;Disagree</label>";
+				qhtml += "</div>";
+				qhtml += "</div>";
+				$("#questions").append(qhtml);
+			}
+
+			// add behaviour to the result button
+			$("#go").click(function() {
+
+				$("#result").show();
+				
+				var rhtml = "";
+				
+				rhtml += "<div class='rheader'>";
+				rhtml += "<div class='rheading'>Beliefs Inventory Results</div>";
+				rhtml += "<div class='rinfo'>";
+				rhtml += "<div class='rinfoitem'>";
+				rhtml += "<div class='rinfolabel'>Name:</div>";
+				rhtml += "<div class='rinfodata'>";
+				rhtml += $("#clientname").val();
+				rhtml += "</div>";
+				rhtml += "</div>";
+				rhtml += "<div class='rinfoitem'>";
+				rhtml += "<div class='rinfolabel'>ID:</div>";
+				rhtml += "<div class='rinfodata'>";
+				rhtml += $("#clientid").val();
+				rhtml += "</div>";
+				rhtml += "</div>";
+				rhtml += "<div class='rinfoitem'>";
+				rhtml += "<div class='rinfolabel'>Date:</div>";
+				rhtml += "<div class='rinfodata'>";
+				rhtml += $("#date").val();
+				rhtml += "</div>";
+				rhtml += "</div>";
+				rhtml += "</div>";
+				rhtml += "</div>";
+				rhtml += "<div class='rbeliefs'>";
+
+				// init all the beliefs to zero
+				for (belief in beliefs) {
+					beliefs[belief]["intensity"] = 0;
+				}
+
+				// add up the results of the questions
+				for (question in questions) {
+					var qid = "q" + question;
+					var qn = questions[question];
+					var belief = qn["belief"];
+					var value = $("input[name=" + qid + "]:checked").val()
+					if (value == qn["score"]) {
+						beliefs[belief]["intensity"] += 1;
+					}
+				}
+
+				// finally, bung in the beliefs and their intensities
+				// lazy sorting.. from 10 down
+				for (var i = 10; i--; i >= 0) {
+					for (belief in beliefs) {
+						if (beliefs[belief]["intensity"] == i) {
+							rhtml += "<div class='rbelief'>";
+							rhtml += "<div class='rintensity'>";
+							rhtml += i;
+							rhtml += "</div>";
+							rhtml += "<div class='rdescription'>";
+							rhtml += beliefs[belief]["description"];
+							rhtml += "</div>";
+							rhtml += "</div>";
+						}
+					}
+				}
+				$("#result").html(rhtml);
+			});
+		});
+
+	</script>
+
+</head>
+
+<body>
+	<div class="main">
+		<div class="heading" id="heading">
+			<h1>Beliefs Inventory Scoring Tool</h1>
+		</div>
+		<div class="info" id="info">
+			<div class="infoitem">
+				<div class="prompt">
+					Client name:
+				</div>
+				<div class="answer">
+					<input type="text" name="clientname" id="clientname" />
+				</div>
+			</div>
+			<div class="infoitem">
+				<div class="prompt">
+					Client ID:
+				</div>
+				<div class="answer">
+					<input type="text" name="clientid" id="clientid" />
+				</div>
+			</div>
+			<div class="infoitem">
+				<div class="prompt">
+					Date:
+				</div>
+				<div class="answer">
+					<input type="text" name="date" id="date" />
+				</div>
+			</div>
+		</div>
+		<div class="questions" id="questions">
+			<p>Stand back. Loading.</p>
+			<p>
+				If you see this message for more than a few seconds,
+				your browser is broken, and this isn't gonna work.  Sorry.
+				Email me at beliefsinventory@danielbaird.com and tell me
+				about it.
+			</p>
+		</div>
+		<div class="info" id="info">
+			<div class="infoitem">
+				<div class="prompt">
+					Ready to see the result?
+				</div>
+				<div class="answer">
+					<input type="submit" id="go" value="show results" />
+				</div>
+			</div>
+		</div>
+		<div class="result" id="result">
+		</div>
+	</div>
+</body>
+</html>
+
