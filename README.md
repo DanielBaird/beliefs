@@ -1,2 +1,3 @@
-# beliefs-inventory
-Core Beliefs Inventory Scoring Tool
+# beliefs
+
+A scoring tool for the Core Beliefs Inventory.
